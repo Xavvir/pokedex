@@ -1,18 +1,21 @@
+function convertPokemonTypesToli(pokemonTypes) {
+  return pokemonTypes.map((typeSlot) => `<li class="type">${typeSlot.type.name}</li>`)
+}
+
 function convertPokemonToli(pokemon) {
   return `
-    <li class="pokemon">
+    <li class="pokemon ${pokemon.type}">
     <div class="dados">
-      <span class="number">#001</span>
+      <span class="number">#00${pokemon.number}</span>
       <span class="name">${pokemon.name}</span>
     </div>
     <div class="datail">
       <ol class="types">
-        <li class="type">Grass</li>
-        <li class="type">Poison</li>
+          ${pokemon.types.map((type) => `<li class="type ${type}">${type}</li>`).join('')}
       </ol>
       <picture>
         <img
-          src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+          src="${pokemon.photo}"
           alt="${pokemon.name}"
         />
       </picture>
@@ -24,14 +27,19 @@ const pokemonList = document.getElementById("pokemonList");
 
 pokeApi
   .getPokemons()
-  .then((pokemons) => {
-    const listItens = []
+  .then((pokemons = []) => {
+    //Possibilidade 2
 
-    for (let i = 1; i < pokemons.length; i++) {
-      const pokemon = pokemons[i];
-      listItens.push(convertPokemonToli(pokemon))
-    }
+    pokemonList.innerHTML = pokemons.map(convertPokemonToli).join("");
 
-    console.log(listItens)
-})
+    //Possibilidade 1
+    // const listItens = [];
+
+    //   for (let i = 1; i < pokemons.length; i++) {
+    //     const pokemon = pokemons[i];
+    //     listItens.push(convertPokemonToli(pokemon));
+    //   }
+
+    //   console.log(listItens);
+  })
   .catch((error) => console.error(error));
