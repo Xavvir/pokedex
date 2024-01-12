@@ -6,8 +6,14 @@ function convertPokemonTypesToli(pokemonTypes) {
 
 const pokemonList = document.getElementById("pokemonList");
 const loadMoreButton = document.getElementById("loadMoreButton");
-const limit = 5;
+
+const maxRecords = 15
+const limit = 5
 let offset = 0;
+
+// 1, 2, 3, 4, 5             0 - 5
+// 6, 7, 8, 9, 10            5 - 5
+// 11,                        10 - 1  (remove o botão)
 
 // function convertPokemonToli(pokemon) {
 // return `
@@ -34,7 +40,9 @@ let offset = 0;
 
 function loadPokemonItens(offset, limit) {
   pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
-    const newHtml = pokemons.map((pokemon) => `
+    const newHtml = pokemons
+      .map(
+        (pokemon) => `
        <li class="pokemon ${pokemon.type}">
           <div class="dados">
             <span class="number">#00${pokemon.number}</span>
@@ -43,8 +51,8 @@ function loadPokemonItens(offset, limit) {
         <div class="datail">
           <ol class="types">
               ${pokemon.types
-              .map((type) => `<li class="type ${type}">${type}</li>`)
-              .join("")}
+                .map((type) => `<li class="type ${type}">${type}</li>`)
+                .join("")}
           </ol>
         <picture>
           <img
@@ -53,17 +61,29 @@ function loadPokemonItens(offset, limit) {
           />
         </picture>
         </div>
-        </li>`).join('')
+        </li>`
+      )
+      .join("");
     pokemonList.innerHTML += newHtml;
-  })
-};
+  });
+}
 
-loadPokemonItens(offset,limit);
+loadPokemonItens(offset, limit);
 
-loadMoreButton.addEventListener('click', () => {
-  offset += limit
-  loadPokemonItens(offset, limit);
-})
+loadMoreButton.addEventListener("click", () => {
+  offset += limit;
+
+  const qtdRecordNextPage = offset + limit;
+
+  if (qtdRecordNextPage >= maxRecords) {
+    const newLimit = maxRecords - offset;
+    loadPokemonItens(offset, newLimit)
+
+    loadMoreButton.parentElement.removeChild(loadMoreButton);
+  } else {
+    loadPokemonItens(offset, limit);
+  }
+});
 
 // pokeApi
 //   .getPokemons()
