@@ -113,7 +113,7 @@ ol.pokemons li {
 
 @media screen and (min-width: 992px) {
     ol.pokemons {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 1fr 1fr;
         height: auto;
         margin: 1rem auto;
     }

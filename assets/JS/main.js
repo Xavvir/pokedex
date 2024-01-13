@@ -6,64 +6,41 @@ function convertPokemonTypesToli(pokemonTypes) {
 
 const pokemonList = document.getElementById("pokemonList");
 const loadMoreButton = document.getElementById("loadMoreButton");
+const pokemon = document.getElementsByClassName("pokemon");
 
-const maxRecords = 15
-const limit = 5
+const maxRecords = 30;
+const limit = 5;
 let offset = 0;
 
-// 1, 2, 3, 4, 5             0 - 5
-// 6, 7, 8, 9, 10            5 - 5
-// 11,                        10 - 1  (remove o botão)
-
-// function convertPokemonToli(pokemon) {
-// return `
-//     <li class="pokemon ${pokemon.type}">
-//     <div class="dados">
-//       <span class="number">#00${pokemon.number}</span>
-//       <span class="name">${pokemon.name}</span>
-//     </div>
-//     <div class="datail">
-//       <ol class="types">
-//           ${pokemon.types
-//             .map((type) => `<li class="type ${type}">${type}</li>`)
-//             .join("")}
-//       </ol>
-//       <picture>
-//         <img
-//           src="${pokemon.photo}"
-//           alt="${pokemon.name}"
-//         />
-//       </picture>
-//     </div>
-//   </li>`;
-// }
+function convertPokemonToli(pokemon) {
+  return `
+    <li class="pokemon ${pokemon.type}">
+    <div class="dados">
+      <span class="number">#00${pokemon.number}</span>
+      <span class="name">${pokemon.name}</span>
+    </div>
+    <div class="datail">
+      <ol class="types">
+          ${pokemon.types
+            .map((type) => `<li class="type ${type}">${type}</li>`)
+            .join("")}
+      </ol>
+      <picture>
+        <img
+          src="${pokemon.photo}" alt="${pokemon.name}"
+        />
+      </picture>
+    </div>
+    <span class="datail">Abilities: ${pokemon.abilities}</span>
+    <span class="datail">Species: ${pokemon.species}</span>
+    <span class="datail">Height: ${pokemon.height}</span>
+    <span class="datail">Weight: ${pokemon.weight}</span>
+    </li>`;
+}
 
 function loadPokemonItens(offset, limit) {
   pokeApi.getPokemons(offset, limit).then((pokemons = []) => {
-    const newHtml = pokemons
-      .map(
-        (pokemon) => `
-       <li class="pokemon ${pokemon.type}">
-          <div class="dados">
-            <span class="number">#00${pokemon.number}</span>
-            <span class="name">${pokemon.name}</span>
-          </div>
-        <div class="datail">
-          <ol class="types">
-              ${pokemon.types
-                .map((type) => `<li class="type ${type}">${type}</li>`)
-                .join("")}
-          </ol>
-        <picture>
-          <img
-            src="${pokemon.photo}"
-            alt="${pokemon.name}"
-          />
-        </picture>
-        </div>
-        </li>`
-      )
-      .join("");
+    const newHtml = pokemons.map(convertPokemonToli).join("");
     pokemonList.innerHTML += newHtml;
   });
 }
@@ -77,7 +54,7 @@ loadMoreButton.addEventListener("click", () => {
 
   if (qtdRecordNextPage >= maxRecords) {
     const newLimit = maxRecords - offset;
-    loadPokemonItens(offset, newLimit)
+    loadPokemonItens(offset, newLimit);
 
     loadMoreButton.parentElement.removeChild(loadMoreButton);
   } else {
