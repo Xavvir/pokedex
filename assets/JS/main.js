@@ -6,11 +6,11 @@ function convertPokemonTypesToli(pokemonTypes) {
 
 const pokemonList = document.getElementById("pokemonList");
 const loadMoreButton = document.getElementById("loadMoreButton");
-const pokemon = document.getElementsByClassName("pokemon");
 
-const maxRecords = 30;
+const maxRecords = 70;
 const limit = 5;
 let offset = 0;
+
 
 function convertPokemonToli(pokemon) {
   return `
@@ -31,10 +31,10 @@ function convertPokemonToli(pokemon) {
         />
       </picture>
     </div>
-    <span class="datail">Abilities: ${pokemon.abilities}</span>
-    <span class="datail">Species: ${pokemon.species}</span>
-    <span class="datail">Height: ${pokemon.height}</span>
-    <span class="datail">Weight: ${pokemon.weight}</span>
+    <span class="datail">Habilidades: ${pokemon.abilities}</span>
+    <span class="datail">Espécie: ${pokemon.species}</span>
+    <span class="datail">Altura: ${pokemon.height/10} metros</span>
+    <span class="datail">Peso: ${pokemon.weight/10} Kg</span>
     </li>`;
 }
 
